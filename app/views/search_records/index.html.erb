@@ -1,0 +1,44 @@
+<p style="color: green"><%= notice %></p>
+
+<h1> Search Records and Analytics </h1>
+
+<form id="search-form">
+  <label for="query">Search:</label>
+  <input type="text" id="query" name="query">
+  <button type="submit">Search</button>
+</form>
+
+<ul>
+  <% @search_records.group(:query).count.each do |query, count| %>
+    <li><%= query %> - <%= count %> searches</li>
+  <% end %>
+</ul>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+
+  // Record and save user search in realtime
+  const searchForm = $('#search-form');
+    const searchbar = document.getElementById('query')
+    searchbar.addEventListener('input', function(event){
+      event.preventDefault();
+      if (query.value !== '') {
+        fetch('/search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+          },
+          body: JSON.stringify({ query: query.value })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+        })
+        .catch(error => console.error(error));
+      }
+    })
+  })
+
+</script>
