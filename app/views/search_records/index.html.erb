@@ -1,18 +1,32 @@
-<p style="color: green"><%= notice %></p>
+<div>
+  <p style="color: green"><%= notice %></p>
 
-<h1> Search Records and Analytics </h1>
+  <h1> Search Records and Analytics </h1>
 
-<form id="search-form">
-  <label for="query">Search:</label>
-  <input type="text" id="query" name="query">
-  <button type="submit">Search</button>
-</form>
+  <form id="search-form">
+    <label for="query">Search:</label>
+    <input type="text" id="query" name="query" placeholder="Search...">
+    <%#<button type="submit">Search</button> %>
+  </form>
 
-<ul>
-  <% @search_records.group(:query).count.each do |query, count| %>
-    <li><%= query %> - <%= count %> searches</li>
-  <% end %>
-</ul>
+  <h2> Analytics</h2>
+  
+  <div class="tableDiv">
+    <table>
+      <tr>
+        <th>Search term </th>
+        <th>Frequency </th>
+      </tr>
+      <% @search_records.group(:query).count.sort_by { |query, count| -count }.each do |query, count| %>
+        <tr class="tr">
+          <td> <%= query %> </td>
+          <td> <%= count %> </td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
