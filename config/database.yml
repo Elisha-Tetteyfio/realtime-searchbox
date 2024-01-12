@@ -4,20 +4,20 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV.fetch("DB_USER") %>
+  password: <%= ENV.fetch("DB_PASSWORD") %>
 
 development:
   <<: *default
   database: realtime_searchbox
-  username: <%= ENV.fetch("DB_USER") %>
-  password: <%= ENV.fetch("DB_PASSWORD") %>
+
   #host: localhost
   #port: 5432
 
 test:
   <<: *default
   database: realtime_searchbox_test
-  username: <%= ENV.fetch("DB_USER") %>
-  password: <%= ENV.fetch("DB_PASSWORD") %>
+
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -42,5 +42,5 @@ test:
 production:
   <<: *default
   database: realtime_searchbox_production
-  username: realtime_searchbox
-  password: <%= ENV["REALTIME_SEARCHBOX_DATABASE_PASSWORD"] %>
+  # username: realtime_searchbox
+  # password: <%= ENV["REALTIME_SEARCHBOX_DATABASE_PASSWORD"] %>
