@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -9,9 +11,9 @@ RSpec.describe User, type: :model do
     end
 
     it 'validates presence of ip_address' do
-      expect {
+      expect do
         create(:user, ip_address: nil)
-      }.to raise_error(ActiveRecord::RecordInvalid, /Validation failed: Ip address can't be blank/)
+      end.to raise_error(ActiveRecord::RecordInvalid, /Validation failed: Ip address can't be blank/)
     end
   end
 
