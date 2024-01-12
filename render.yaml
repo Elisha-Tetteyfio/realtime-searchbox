@@ -1,5 +1,5 @@
 databases:
-  - name: realtime_searchbox
+  - name: postgres
     databaseName: realtime_searchbox_db
     user: realtime_searchbox_user
     plan: free
@@ -15,7 +15,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: realtime_searchbox
+          name: postgres
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
