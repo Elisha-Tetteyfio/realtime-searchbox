@@ -4,7 +4,7 @@ class SearchRecordsController < ApplicationController
   before_action :set_user
 
   def index
-    @search_records = SearchRecord.all
+    @search_records = @user.search_records.all
     @my_recent_searches = @user.search_records.all.order('created_at DESC').first(5)
   end
 
