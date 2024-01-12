@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   root "search_records#index"
 
   post 'search', to: 'search_records#search'
+  get '/suggest', to: 'search_records#suggest'
 end

@@ -4,10 +4,13 @@
   <h1> Search Records and Analytics </h1>
 
   <form id="search-form">
-    <label for="query">Search:</label>
-    <input type="text" id="query" name="query" placeholder="Search...">
+    <%#<label for="query">Search:</label>%>
+    <input type="text" id="query" name="query" placeholder="Search articles..." autocomplete="off">
     <%#<button type="submit">Search</button> %>
+    <div id="suggestion-box"></div>
   </form>
+
+  
 
   <h2> My Recent Searches </h2>
   <ul id="recent-searches-list">
@@ -81,6 +84,54 @@
           console.error('Error:', error);
         }
       });
+    });
+
+    //Add suggestions
+    const suggestionBox = $('#suggestion-box');
+
+    searchbar.on('input', function(event) {
+      event.preventDefault();
+      const queryValue = searchbar.val();
+
+      // Clear suggestion box and hide it if query is empty
+      if (queryValue === '') {
+        suggestionBox.empty().hide();
+        return;
+      }
+
+      // Fetch suggestions from the server
+      $.ajax({
+        type: 'GET',
+        url: '/suggest',
+        data: { query: queryValue },
+        success: function(data) {
+          renderSuggestions(data);
+        },
+        error: function(error) {
+          console.error('Error fetching suggestions:', error);
+        }
+      });
+    });
+
+    function renderSuggestions(suggestions) {
+      suggestionBox.empty();
+
+      if (suggestions.length > 0) {
+        suggestions.forEach(function(suggestion) {
+          suggestionBox.append(`<div class="suggestion">${suggestion}</div>`);
+        });
+
+        // Show the suggestion box
+        suggestionBox.show();
+      } else {
+        // If no suggestions, hide the suggestion box
+        suggestionBox.hide();
+      }
+    }
+    // Handle clicks on suggestions
+    suggestionBox.on('click', '.suggestion', function() {
+      searchbar.val($(this).text());
+      suggestionBox.empty().hide();
     });
   });
 </script>

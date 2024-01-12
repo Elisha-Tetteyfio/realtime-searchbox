@@ -14,6 +14,22 @@ class SearchRecordsController < ApplicationController
     render json: { status: 'success' }
   end
 
+  def suggest
+    suggestions = fetch_suggestions(params[:query])
+
+    render json: suggestions
+  end
+
+  private
+
+  def fetch_suggestions(query)
+    existing_queries = @user.search_records.pluck(:query)
+
+    related_searches = existing_queries.select do |existing_query|
+      existing_query.downcase.include?(query.downcase)
+    end
+  end
+
   private
 
   def set_user

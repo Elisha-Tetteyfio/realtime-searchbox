@@ -64,6 +64,22 @@ button:hover {
   background-color: #2980b9;
 }
 
+#suggestion-box {
+  /* position: absolute; */
+  width: 70%;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  display: none;
+}
+
+.suggestion {
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
 /* Styles for the notification */
 p {
   color: #27ae60;
