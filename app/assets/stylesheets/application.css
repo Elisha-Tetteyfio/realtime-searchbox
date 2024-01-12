@@ -71,8 +71,20 @@ p {
 }
 
 /* Styles for the headers */
-h1, h2 {
+h1, h2, h5 {
   color: #3498db;
+}
+
+h5, .globalAnalyticsHeader {
+  display: inline;
+}
+
+#recent-searches-list {
+  list-style-type: circle;
+}
+
+#recent-searches-list li {
+  margin-bottom: 5px;
 }
 
 /* Responsive styles */

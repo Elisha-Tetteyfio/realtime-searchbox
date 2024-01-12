@@ -9,7 +9,14 @@
     <%#<button type="submit">Search</button> %>
   </form>
 
-  <h2> Analytics</h2>
+  <h2> My Recent Searches </h2>
+  <ul id="recent-searches-list">
+    <% @my_recent_searches.each do |search| %>
+      <li> <%= search.query %> </li>
+    <% end %>
+  </ul>
+
+  <h2 class="globalAnalyticsHeader"> Global Analytics <h5>(Refresh to see)</h5></h2>
   
   <div class="tableDiv">
     <table>
@@ -27,32 +34,53 @@
   </div>
 </div>
 
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function(){
 
   // Record and save user search in realtime
   const searchForm = $('#search-form');
-    const searchbar = document.getElementById('query')
-    searchbar.addEventListener('input', function(event){
+    const searchbar = $('#query');
+
+    searchbar.on('input', function(event){
       event.preventDefault();
-      if (query.value !== '') {
+      const queryValue = searchbar.val();
+      console.log(queryValue)
+
+      if (queryValue !== '') {
         fetch('/search', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
           },
-          body: JSON.stringify({ query: query.value })
+          body: JSON.stringify({ query: queryValue })
         })
         .then(response => response.json())
-        .then(data => {
-          console.log(data);
-        })
         .catch(error => console.error(error));
       }
-    })
-  })
+    });
 
+    // Update recent search
+    $('#query').on('input', function(e) {
+      e.preventDefault();
+
+      const query = $('#query').val();
+
+      $.ajax({
+        type: 'POST',
+        url: '/search',
+        data: { query: query },
+        headers: {
+          'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
+        },
+        success: function() {
+          $('#recent-searches-list').load(window.location.href + ' #recent-searches-list');      
+        },
+        error: function(error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  });
 </script>
